@@ -6,22 +6,18 @@ import { checkSessionIdExist } from "../middlewares/check-session-id-exist";
 // Cookies <-> Formas da gente manter contexto entre requisições
 
 export async function transactionsRoutes(app: FastifyInstance) {
-  app.get(
-    "/",
-    { preHandler: [checkSessionIdExist] },
-    async (request, response) => {
-      const { sessionId } = request.cookies;
+  app.get("/", { preHandler: [checkSessionIdExist] }, async (request) => {
+    const { sessionId } = request.cookies;
 
-      const transactions = await knex("transactions").where(
-        "session_id",
-        sessionId,
-      );
+    const transactions = await knex("transactions").where(
+      "session_id",
+      sessionId,
+    );
 
-      return {
-        transactions,
-      };
-    },
-  );
+    return {
+      transactions,
+    };
+  });
 
   app.get("/:id", { preHandler: [checkSessionIdExist] }, async (request) => {
     const { sessionId } = request.cookies;
@@ -44,7 +40,7 @@ export async function transactionsRoutes(app: FastifyInstance) {
   app.get(
     "/summary",
     { preHandler: [checkSessionIdExist] },
-    async (request, response) => {
+    async (request) => {
       const { sessionId } = request.cookies;
       // sum é o metódo que soma todos os valores de uma coluna
       const summary = await knex("transactions")
