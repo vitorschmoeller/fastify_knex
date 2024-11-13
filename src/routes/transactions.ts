@@ -84,8 +84,6 @@ export async function transactionsRoutes(app: FastifyInstance) {
       session_id: sessionId,
     });
 
-    return response
-      .status(201)
-      .send({ message: "success to registe the user" });
+    return response.status(201).send();
   });
 }
