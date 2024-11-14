@@ -1,6 +1,13 @@
 // Ele le os arquivos do .env e depois joga todos dentro de process.env
-import "dotenv/config";
+import { config } from "dotenv";
 import { z } from "zod";
+
+if (process.env.NODE_ENV === "test") {
+  config({ path: ".env.test" });
+  console.log("EAEEEEEEEEEEEEEEEEEEEEEEEEEEE BOYytyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+} else {
+  config();
+}
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("production"),
@@ -8,6 +15,7 @@ const envSchema = z.object({
   PORT: z.number().default(3333),
 });
 // faz a verificação se os dados estão de acordo com a tipagem do zod, caso de erro o parse dispara
+// safeparse é um método do zod que ao inves de retornar um erro, dentro dele se cria uma propriedade "success" que retorna "true" or "false"
 export const _env = envSchema.safeParse(process.env);
 
 if (_env.success === false) {
