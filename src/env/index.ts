@@ -4,15 +4,15 @@ import { z } from "zod";
 
 if (process.env.NODE_ENV === "test") {
   config({ path: ".env.test" });
-  console.log("EAEEEEEEEEEEEEEEEEEEEEEEEEEEE BOYytyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 } else {
   config();
 }
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("production"),
+  DATABASE_CLIENT: z.enum(["sqlite", "pg"]),
   DATABASE_URL: z.string(),
-  PORT: z.number().default(3333),
+  PORT: z.coerce.number().default(3333),
 });
 // faz a verificação se os dados estão de acordo com a tipagem do zod, caso de erro o parse dispara
 // safeparse é um método do zod que ao inves de retornar um erro, dentro dele se cria uma propriedade "success" que retorna "true" or "false"
